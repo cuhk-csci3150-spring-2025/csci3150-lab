@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/sysinfo.h>
 
 /* print the error message and exit */
 #define handle_error_en(en, msg)                                                         \
@@ -14,7 +15,7 @@
 
 int main(int argc, char *argv[]) {
     int s, j;
-    int CPUNUM = 4;
+    int CPUNUM = get_nprocs();
     cpu_set_t cpuset;
     pthread_t thread;
 
@@ -22,9 +23,9 @@ int main(int argc, char *argv[]) {
 
     CPU_ZERO(&cpuset); // empty the cpu set
     for (j = 0; j < CPUNUM - 1; j++)
-        CPU_SET(j, &cpuset); // add each cpu to the cpu set except the cpu 3
+        CPU_SET(j, &cpuset); // add each cpu to the cpu set except the last one
 
-    /* Set affinity mask to include CPUs 0 to 2 */
+    /* Set affinity mask to include CPUs but the last one */
     s = pthread_setaffinity_np(thread, sizeof(cpu_set_t), &cpuset);
 
     if (s != 0)
