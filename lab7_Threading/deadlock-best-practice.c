@@ -39,7 +39,7 @@ void *Allen(void *arg) {
 
 void *Bob(void *arg) {
     pthread_mutex_lock(&book2);
-    while (allen_finished) {
+    while (!allen_finished) {
         pthread_cond_wait(&cv_allen_finished, &book2);
     }
 
