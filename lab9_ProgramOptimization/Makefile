@@ -4,10 +4,9 @@ PROGS = $(patsubst %.c,%,$(SRCS))
 
 all: $(PROGS)
 
-CFLAGS = -lpthread -latomic
 
 %: %.c
-	gcc $< $(CFLAGS) -o $@
+	gcc $< -O0 -std=c99 -o $@
 
 .PHONY: clean
 clean:
